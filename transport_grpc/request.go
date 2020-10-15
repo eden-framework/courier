@@ -87,10 +87,10 @@ func (grpcRequest *GRPCRequest) Do() (result courier.Result) {
 
 	if err != nil {
 		if s, ok := status.FromError(err); ok {
-			result.Err = status_error.ParseString(s.Message())
+			result.Err = status_error.HttpRequestFailed.StatusError().WithMsg(s.Message())
 			return
 		}
-		result.Err = status_error.UnknownError
+		result.Err = status_error.HttpRequestFailed
 		return
 	}
 
