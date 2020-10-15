@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"github.com/profzone/envconfig"
 	"os"
 	"strings"
 	"time"
@@ -24,8 +25,8 @@ type Client struct {
 	Host          string `conf:"upstream" validate:"@hostname"`
 	Mode          string
 	Port          int16
-	Timeout       time.Duration
-	WrapTransport transport_http.TransportWrapper `json:"-"`
+	Timeout       envconfig.Duration
+	WrapTransport transport_http.TransportWrapper `json:"-" ignored:"true"`
 }
 
 func (Client) MarshalDefaults(v interface{}) {
@@ -46,7 +47,7 @@ func (Client) MarshalDefaults(v interface{}) {
 			client.Port = 80
 		}
 		if client.Timeout == 0 {
-			client.Timeout = 5 * time.Second
+			client.Timeout = envconfig.Duration(5 * time.Second)
 		}
 	}
 }
@@ -104,7 +105,7 @@ func (c *Client) Request(id, httpMethod, uri string, req interface{}, metas ...c
 			BaseURL:    c.GetBaseURL(""),
 			ServerName: serverName,
 			Method:     method,
-			Timeout:    c.Timeout,
+			Timeout:    time.Duration(c.Timeout),
 			RequestID:  requestID,
 			Req:        req,
 			Metadata:   metadata,
@@ -115,7 +116,7 @@ func (c *Client) Request(id, httpMethod, uri string, req interface{}, metas ...c
 			Method:        httpMethod,
 			URI:           uri,
 			ID:            id,
-			Timeout:       c.Timeout,
+			Timeout:       time.Duration(c.Timeout),
 			WrapTransport: c.WrapTransport,
 			Req:           req,
 			Metadata:      metadata,
