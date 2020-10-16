@@ -65,7 +65,7 @@ func (grpcRequest *GRPCRequest) Do() (result courier.Result) {
 	)
 
 	if errForInitial != nil {
-		result.Err = status_error.InvalidStruct.StatusError().WithDesc(errForInitial.Error())
+		result.Err = status_error.RequestTimeout.StatusError().WithDesc(errForInitial.Error())
 		return
 	}
 
