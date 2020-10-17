@@ -41,7 +41,7 @@ func (Client) MarshalDefaults(v interface{}) {
 			client.Mode = "http"
 		}
 		if client.Host == "" {
-			client.Host = fmt.Sprintf("service-%s.staging.g7pay.net", client.Name)
+			client.Host = "localhost"
 		}
 		if client.Port == 0 {
 			client.Port = 80
