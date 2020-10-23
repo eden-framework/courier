@@ -103,10 +103,12 @@ func CreateStreamHandler(s *ServeGRPC, ops ...courier.IOperator) grpc.StreamHand
 
 func createGRPCStreamDecoder(data []byte) courier.OperatorDecoder {
 	return func(op courier.IOperator, rv reflect.Value) (err error) {
-		err = msgpack.Unmarshal(data, op)
-		if err != nil {
-			err = status_error.InvalidStruct.StatusError().WithDesc(err.Error())
-			return
+		if data != nil {
+			err = msgpack.Unmarshal(data, op)
+			if err != nil {
+				err = status_error.InvalidStruct.StatusError().WithDesc(err.Error())
+				return
+			}
 		}
 		return
 	}
