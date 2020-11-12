@@ -127,15 +127,15 @@ func (s *ServeHTTP) convertRouterToHttpRouter(router *courier.Router) *httproute
 
 		for i := range operatorTypeNames {
 			if i < lengthOfOperatorTypes-1 {
-				operatorTypeNames[i] = color.MagentaString(operatorTypeNames[i])
+				operatorTypeNames[i] = color.HiCyanString(operatorTypeNames[i])
 			} else {
-				operatorTypeNames[i] = color.CyanString(operatorTypeNames[i])
+				operatorTypeNames[i] = color.HiMagentaString(operatorTypeNames[i])
 			}
 		}
 
 		fmt.Printf(
 			"[Courier] %s %s\n",
-			colorByMethod(method)("%s %s", method[0:3], RxHttpRouterPath.ReplaceAllString(p, "/{$1}")),
+			colorByMethod(method)("%-8s %s", method, RxHttpRouterPath.ReplaceAllString(p, "/{$1}")),
 			strings.Join(operatorTypeNames, " "),
 		)
 
@@ -174,6 +174,8 @@ func colorByMethod(method string) func(f string, args ...interface{}) string {
 		return color.RedString
 	case http.MethodHead:
 		return color.WhiteString
+	case http.MethodPatch:
+		return color.MagentaString
 	default:
 		return color.BlackString
 	}
