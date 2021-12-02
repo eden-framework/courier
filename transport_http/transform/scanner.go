@@ -210,7 +210,9 @@ func (pw *PathWalker) Enter(i interface{}) {
 }
 
 func (pw *PathWalker) Exit() {
-	pw.path = pw.path[:len(pw.path)-1]
+	if len(pw.path) > 0 {
+		pw.path = pw.path[:len(pw.path)-1]
+	}
 }
 
 func (pw *PathWalker) Paths() []interface{} {
